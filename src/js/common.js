@@ -3,18 +3,17 @@ import { loadHeaderFooter } from './utils.mjs';
 loadHeaderFooter();
 
 window.addEventListener('click', (event) => {
+
     const link = event.target.closest('a');
-    
+
     if (link) {
         event.preventDefault();
         let href = link.getAttribute('href');
-        
-        let destinationURL;
+
         if (/^https?:\/\//.test(href)) {
-            destinationURL = href;
+            window.location.href = href;
         } else {
-            destinationURL = new URL(href, window.location.origin).href;
+            window.location.href = new URL(href, window.location.origin).href;
         }
- 
     }
 }); 

@@ -14,22 +14,23 @@
         rel="stylesheet">
     <link rel="stylesheet" href="../styles/style.css">
     <script src="../js/common.js" type="module"></script>
+    <script src="../js/product-listing.js" type="module"></script>
 </head>
 
 <body class="font-sans text-gray-900 bg-lightblue flex flex-col min-h-screen">
-    <!-- Navigation -->
+
     <header id="app-header"></header>
-    <!-- Main Content -->
-    <main id="inicio" class="pt-16 pb-20 px-4 sm:px-6 lg:px-8 flex-grow">
-        <!-- Navigation -->
-        <nav class="bg-white rounded-lg shadow-md p-6 max-w-7xl mx-auto">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Filtrar Productos</h2>
+    <main class="pt-16 pb-20 px-4 sm:px-6 lg:px-8 flex-grow">
+
+        <nav class="bg-white rounded-lg shadow-md p-6 max-w-7xl mx-auto filter-nav-animate">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                Filtrar Productos
+            </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Search by Name -->
                 <div class="flex flex-col">
-                    <label for="search" class="text-sm font-medium text-gray-700 mb-2">Buscar por Nombre</label>
+                    <label for="search" class="text-sm font-medium text-gray-700 mb-2">Search Product</label>
                     <div class="relative">
-                        <input type="text" id="search" placeholder="Buscar productos..."
+                        <input type="text" id="search" placeholder="Search product..."
                             class="w-full px-4 py-2.5 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all" />
                         <svg class="absolute left-3 top-3 h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -39,32 +40,30 @@
                     </div>
                 </div>
 
-                <!-- Lens Type Filter -->
                 <div class="flex flex-col">
-                    <label for="lens-type" class="text-sm font-medium text-gray-700 mb-2">Tipo de Lente</label>
-                    <select id="lens-type"
+                    <label for="productType" class="text-sm font-medium text-gray-700 mb-2">Product type</label>
+                    <select id="productType"
                         class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white cursor-pointer">
-                        <option value="">Todos los Tipos</option>
-                        <option value="sunglasses">Gafas de Sol</option>
-                        <option value="frames">Monturas</option>
-                        <option value="contact-lenses">Lentes de Contacto</option>
+                        <option value="">All Products</option>
+                        <option value="sunglasses">Sunglasses</option>
+                        <option value="eyeglasses">Eyeglasses</option>
                     </select>
                 </div>
 
-                <!-- Gender Filter -->
                 <div class="flex flex-col">
                     <label for="gender" class="text-sm font-medium text-gray-700 mb-2">Género</label>
                     <select id="gender"
                         class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white cursor-pointer">
-                        <option value="">Todos los Géneros</option>
-                        <option value="male">Hombre</option>
-                        <option value="female">Mujer</option>
+                        <option value="">All genders</option>
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Men,Women">Unisex</option>
                     </select>
                 </div>
 
                 <!-- Clear Filters Button -->
                 <div class="flex flex-col justify-end">
-                    <button type="button"
+                    <button type="button" id="clear-filters"
                         class="w-full px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors duration-200">
                         Limpiar Filtros
                     </button>
@@ -72,73 +71,106 @@
             </div>
         </nav>
 
-        <!-- Products Section -->
         <section class="max-w-7xl mx-auto mt-12">
             <h1 class="text-4xl font-bold text-center mb-8">Nuestros Productos</h1>
-            <div class="grid  gap-8 product-grid">
-                <!-- Producto 1 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden relative">
-                    <img src="https://cdn.eyemyeye.com/shared/images/products/S12A2001/S12A2001-1.jpg"
-                        alt="ALF - Wayfarer" class="w-full h-48 object-contain">
+            <div class="grid gap-8 product-grid" id="product-grid">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
                     <div class="p-4">
-                        <h2 class="text-xl font-semibold mb-2">ALF - Wayfarer</h2>
-                        <p class="text-gray-700 mb-2">Género: Men, Women</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-blue-600">$925</span>
-                            <span class="text-sm line-through text-gray-500">$2199</span>
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
                         </div>
-                        <div class="mt-2 flex items-center">
-                            <span class="text-yellow-500">★ 4.2</span>
-                        </div>
-                        <a href="/product-detail/1" class="inset-0 absolute" aria-label="product-card"></a>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
                     </div>
                 </div>
-                <!-- Producto 2 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <img src="https://cdn.eyemyeye.com/shared/images/products/S15C4698/S15C4698-1.jpg"
-                        alt="ALF - Wayfarer" class="w-full h-48 object-contain">
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
                     <div class="p-4">
-                        <h2 class="text-xl font-semibold mb-2">ALF - Wayfarer</h2>
-                        <p class="text-gray-700 mb-2">Género: Men, Women</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-blue-600">$925</span>
-                            <span class="text-sm line-through text-gray-500">$2199</span>
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
                         </div>
-                        <div class="mt-2 flex items-center">
-                            <span class="text-yellow-500">★ 3.5</span>
-                        </div>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
                     </div>
                 </div>
-                <!-- Producto 3 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <img src="https://cdn.eyemyeye.com/shared/images/products/S25B3668/S25B3668-1.jpg"
-                        alt="SOIGNEE - Cateye" class="w-full h-48 object-contain">
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
                     <div class="p-4">
-                        <h2 class="text-xl font-semibold mb-2">SOIGNEE - Cateye</h2>
-                        <p class="text-gray-700 mb-2">Género: Women</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-blue-600">$925</span>
-                            <span class="text-sm line-through text-gray-500">$2199</span>
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
                         </div>
-                        <div class="mt-2 flex items-center">
-                            <span class="text-yellow-500">★ 4.5</span>
-                        </div>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
                     </div>
                 </div>
-                <!-- Producto 4 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                    <img src="https://cdn.eyemyeye.com/shared/images/products/S75B2001/S75B2001-1.jpg"
-                        alt="ALF - Wayfarer" class="w-full h-48 object-contain">
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
                     <div class="p-4">
-                        <h2 class="text-xl font-semibold mb-2">ALF - Wayfarer</h2>
-                        <p class="text-gray-700 mb-2">Género: Men, Women</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg font-bold text-blue-600">$925</span>
-                            <span class="text-sm line-through text-gray-500">$2199</span>
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
                         </div>
-                        <div class="mt-2 flex items-center">
-                            <span class="text-yellow-500">★ 2.8</span>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
+                    <div class="p-4">
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
                         </div>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
+                    <div class="p-4">
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
+                        </div>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
+                    <div class="p-4">
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
+                        </div>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+                    <div class="w-full h-48 bg-gray-300"></div>
+                    <div class="p-4">
+                        <div class="h-6 bg-gray-300 rounded mb-2"></div>
+                        <div class="h-4 bg-gray-200 rounded mb-2 w-3/4"></div>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="h-6 bg-gray-300 rounded w-20"></div>
+                            <div class="h-4 bg-gray-200 rounded w-16"></div>
+                        </div>
+                        <div class="h-4 bg-gray-200 rounded w-24"></div>
                     </div>
                 </div>
             </div>

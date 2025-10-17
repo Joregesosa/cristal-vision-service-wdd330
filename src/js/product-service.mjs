@@ -1,12 +1,11 @@
 import FirebaseService from './firebase-service.mjs';
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where, doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 
 
 export class ProductService {
     constructor() {
+        this.db = FirebaseService.getFirestoreInstance();
         this.productCol = collection(this.db, 'products');
-        this.db = FirebaseService.getFirestoreInstance();
-        this.db = FirebaseService.getFirestoreInstance();
     }
 
     /**
@@ -18,7 +17,7 @@ export class ProductService {
     async getAllProducts() {
         try {
             const snapshot = await getDocs(this.productCol);
-            const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            const products = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id}));
             return products;
         } catch (error) {
             console.error("Error fetching products: ", error);
@@ -27,19 +26,19 @@ export class ProductService {
     }
 
     /**
-     * Finds a product by its ID in the Firestore collection.
+     * Finds a product by its document ID in the Firestore collection.
      *
      * @async
-     * @param {string} id - The ID of the product to find.
+     * @param {string} id - The document ID of the product to find.
      * @returns {Promise<Object|null>} A promise that resolves to the product object if found, or null if not found.
      */
     async findProductById(id) {
         try {
-            const q = query(this.productCol, where('id', '==', id));
-            const snapshot = await getDocs(q);
-            if (!snapshot.empty) {
-                const doc = snapshot.docs[0];
-                return { id: doc.id, ...doc.data() };
+            const docRef = doc(this.db, 'products', id);
+            const docSnap = await getDoc(docRef);
+            
+            if (docSnap.exists()) {
+                return { id: docSnap.id, ...docSnap.data() };
             }
 
             console.log(`No product found with id: ${id}`);
@@ -69,24 +68,18 @@ export class ProductService {
     }
 
     /**
-     * Deletes a product from the database by its ID.
+     * Deletes a product from the database by its document ID.
      *
      * @async
-     * @param {string} id - The ID of the product to delete.
+     * @param {string} id - The document ID of the product to delete.
      * @returns {Promise<boolean>} Returns true if the product was deleted successfully, false otherwise.
      */
     async deleteProduct(id) {
         try {
-            const q = query(this.productCol, where('id', '==', id));
-            const snapshot = await getDocs(q);
-            if (!snapshot.empty) {
-                const doc = snapshot.docs[0];
-                await deleteDoc(doc.ref);
-                console.log(`Product with id: ${id} deleted successfully`);
-                return true;
-            }
-            console.log(`No product found with id: ${id}`);
-            return false;
+            const docRef = doc(this.db, 'products', id);
+            await deleteDoc(docRef);
+            console.log(`Product with id: ${id} deleted successfully`);
+            return true;
         } catch (error) {
             console.error("Error deleting product: ", error);
             return false;
@@ -94,25 +87,19 @@ export class ProductService {
     }
 
     /**
-     * Updates a product in the Firestore collection with the specified ID and updated data.
+     * Updates a product in the Firestore collection with the specified document ID and updated data.
      *
      * @async
-     * @param {string} id - The unique identifier of the product to update.
+     * @param {string} id - The document ID of the product to update.
      * @param {Object} updatedData - An object containing the fields and values to update for the product.
      * @returns {Promise<boolean>} Returns true if the product was updated successfully, false otherwise.
      */
     async updateProduct(id, updatedData) {
         try {
-            const q = query(this.productCol, where('id', '==', id));
-            const snapshot = await getDocs(q);
-            if (!snapshot.empty) {
-                const doc = snapshot.docs[0];
-                await updateDoc(doc.ref, updatedData);
-                console.log(`Product with id: ${id} updated successfully`);
-                return true;
-            }
-            console.log(`No product found with id: ${id}`);
-            return false;
+            const docRef = doc(this.db, 'products', id);
+            await updateDoc(docRef, updatedData);
+            console.log(`Product with id: ${id} updated successfully`);
+            return true;
         } catch (error) {
             console.error("Error updating product: ", error);
             return false;

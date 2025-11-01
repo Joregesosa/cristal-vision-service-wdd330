@@ -1,5 +1,5 @@
 
- 
+
 /**
  * Returns the first element within the document (or specified parent) that matches the given CSS selector.
  *
@@ -8,7 +8,7 @@
  * @returns {Element|null} The first matching element, or null if no matches are found.
  */
 export function qs(selector, parent = document) {
-  return parent.querySelector(selector);
+    return parent.querySelector(selector);
 }
 
 /**
@@ -24,6 +24,19 @@ export function getParam(param) {
     return value;
 }
 
+/**
+ * Parse the current page's query string and return all parameters as an array of objects.
+ *
+ * Reads window.location.search and uses URLSearchParams to extract parameters. Each entry
+ * is returned as an object with `key` and `value` properties, preserving the parameter order.
+ *
+ * @returns {Array<{key: string, value: string}>} An array of parameter objects. Returns an empty array if there are no query parameters.
+ */
+export function getAllCurrentParams() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    return Array.from(urlParams.entries(), ([key, value]) => ({ key, value }));
+}
 
 /**
  * Asynchronously loads an HTML template from the specified path.

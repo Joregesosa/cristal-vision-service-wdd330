@@ -27,11 +27,27 @@
 }
 
 @utility product-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
 @layer base{
   button {
     @apply cursor-pointer;
   }
+}
+
+/* Animación para el nav de filtros */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.filter-nav-animate {
+  animation: slideDown 1.5s ease-out;
 }
